@@ -41,8 +41,11 @@ This project implements that tree structure practically, with real file operatio
 ### 🌐 APIs Integrations 
 -  Weather API - Real-time weather 
 - Crypto API - Live cryptocurrency prices
+  
+###  DEMO
+img/demo.jpg
 
-### A Modular structure 
+### Project Structure
 ```bash
   simfs/
 ├── main.cpp                 # Entry point
