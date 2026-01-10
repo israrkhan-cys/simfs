@@ -37,6 +37,33 @@ This project implements that tree structure practically, with real file operatio
 - Custom JSON parsing
 - Build automation
 - Terminal UI with ANSI colors
+- 
+### 🌐 APIs Integrations 
+-  Weather API - Real-time weather 
+- Crypto API - Live cryptocurrency prices
+
+### A Modular structure 
+```bash
+  simfs/
+├── main.cpp                 # Entry point
+├── build.sh                 # Build automation
+├── README.md                # This file
+├── LICENSE                  # MIT License
+│
+├── include/                 # Header files
+│   ├── file_system.h       # Core file system class
+│   ├── fs_node.h           # File system node structure
+│   ├── weather.h           # Weather API interface
+│   ├── crypto.h            # Cryptocurrency API interface
+│   └── utils.h             # Utility functions
+│
+└── src/                    # Implementation
+    ├── file_system.cpp     # File system implementation
+    ├── fs_node.cpp         # Node operations
+    ├── weather.cpp         # Weather API implementation
+    ├── crypto.cpp          # Crypto API implementation
+    └── utils.cpp           # Utility implementations
+```
 
 
 ```bash
@@ -48,6 +75,11 @@ cd simfs
 # Run
 ./linux_sim
 ```
+<div align="center">
+⭐ If you find this project useful, please give it a star!
+
+*Built with ❤️ by Israr*
+</div>
 
   📝 License
 
