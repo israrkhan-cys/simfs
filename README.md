@@ -68,7 +68,7 @@ img/demo.jpg
     └── utils.cpp           # Utility implementations
 ```
 
-
+### Try it Yourself 
 ```bash
 # Clone and build
 git clone https://github.com/israrkhan-cys/simfs.git
@@ -83,7 +83,3 @@ cd simfs
 
 *Built with ❤️ by Israr*
 </div>
-
-  📝 License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
