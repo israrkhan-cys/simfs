@@ -78,7 +78,7 @@ cd simfs
 # Run
 ./linux_sim
 ```
-# If u have any suggestion or feedbacks for this project hit me up on linkden
+### If u have any suggestion or feedbacks for this project hit me up on linkden
 
 <div align="center">
 ⭐ If you find this project useful, please give it a star!
