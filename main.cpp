@@ -12,7 +12,7 @@ int main() {
     fs.CreateSystem();
     
     //APIs 
-    Weather weatherAPI("7b428597e5330534c4fafaa9bdc91f15");
+    Weather weatherAPI("API_KEY_HERE");
     CryptoAPI cryptoAPI;
 
 
