@@ -1,2 +1,11 @@
+# VSCode settings
 .vscode/
 
+# Build artifacts
+build/
+*.o
+*.out
+*.exe
+
+# Linux simulator binaries/folders
+linux_sim/
