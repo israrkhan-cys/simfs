@@ -47,25 +47,11 @@ img/demo.jpg
 
 ### Project Structure
 ```bash
-  simfs/
-├── main.cpp                 # Entry point
-├── build.sh                 # Build automation
-├── README.md                # This file
-├── LICENSE                  # MIT License
-│
-├── include/                 # Header files
-│   ├── file_system.h       # Core file system class
-│   ├── fs_node.h           # File system node structure
-│   ├── weather.h           # Weather API interface
-│   ├── crypto.h            # Cryptocurrency API interface
-│   └── utils.h             # Utility functions
-│
-└── src/                    # Implementation
-    ├── file_system.cpp     # File system implementation
-    ├── fs_node.cpp         # Node operations
-    ├── weather.cpp         # Weather API implementation
-    ├── crypto.cpp          # Crypto API implementation
-    └── utils.cpp           # Utility implementations
+simfs/
+├── include/     # Headers (interfaces)
+├── src/         # Implementation
+├── main.cpp     # Entry point
+└── build.sh     # Build automation
 ```
 
 ### Try it Yourself 
