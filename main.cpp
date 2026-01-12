@@ -3,24 +3,20 @@
 #include "include/colors.h"
 #include "include/weather.h"
 #include "include/crypto.h"
-
 #include <iostream>
 using namespace std;
 
 int main() {
     FileSystem fs;
     fs.CreateSystem();
-    
     //APIs 
-    Weather weatherAPI("API_KEY_HERE");
+    Weather weatherAPI("7b428597e5330534c4fafaa9bdc91f15");
     CryptoAPI cryptoAPI;
 
 
     string inputLine;
-    cout<<"======================================="<<endl;
-    cout << "=== "<<Colors::BLUE<<" Modular Linux FS Simulator"<<Colors::RESET<<"  ======" << endl;
-    cout<<"======================================="<<endl;
-     
+    showBanner();
+
     while (true) {
         cout << Colors::GREEN << "israr@cpp" << Colors::RESET << ":" 
         << Colors::BLUE << "~" << fs.getPromptPath() << Colors::RESET << "$ ";
@@ -92,15 +88,6 @@ int main() {
             cout << "❌ Usage: crypto convert <amount> <from> to <to>\n";
             cout << "Example: crypto convert 1 bitcoin to ethereum\n";
         }
-    }
-    else if (args.size() >= 3 && args[1] == "search") {
-        std::string query;
-        for (size_t i = 2; i < args.size(); i++) {
-            if (i > 2) query += " ";
-            query += args[i];
-        }
-        // Simple search - just try to get the crypto
-        cout << cryptoAPI.getPrettyCrypto(query) << endl;
     }
     else {
         // Try as single crypto with spaces in name

@@ -18,8 +18,7 @@ void timedate(string cmd);
 void sysinfo();
 void showCommandHelp(const string& cmd);
 void showHelp();
-void SystemUsers();
-
+void showBanner();
 
 
 #endif
