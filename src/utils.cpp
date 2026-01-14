@@ -228,7 +228,7 @@ void showBanner() {
     cout << "║          ╚══════╝╚═╝╚═╝     ╚═╝╚══════╝╚══════╝        ║" << endl;
     cout << "║                                                        ║" << endl;
     cout << "║               File System Simulator v1.0               ║" << endl;
-    cout << "║              Made  with  Love  By   Israr              ║" << endl;
+    cout << "║                                                        ║" << endl;
     cout << "╚════════════════════════════════════════════════════════╝" << endl;
     cout << "📁 Type 'help' for commands | 'exit' to quit" << endl;
     cout << "\033[0m" << endl;
