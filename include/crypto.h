@@ -28,17 +28,16 @@ private:
 public:
     CryptoAPI();
     
-    // Get single cryptocurrency
+    //for  single cryptocurrency
     Cryptocurrency getCryptoPrice(const string& cryptoId);
     
-    // Get top n 
+    // for getting  top n 
     vector<Cryptocurrency> getTopCryptos(int limit = 10);
     
     // Convert between cryptocurrencies
     string convertCrypto(const string& from, const string& to, double amount);
     
-    // Search cryptocurrencies
-    vector<string> searchCrypto(const string& query);
+   
     
     // Pretty print functions
     string getPrettyCrypto(const string& cryptoId);

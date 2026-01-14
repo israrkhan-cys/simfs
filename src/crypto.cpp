@@ -8,7 +8,7 @@
 #include <algorithm>
 using namespace std;
 
-// Constructor
+// Constructor for the API
 CryptoAPI::CryptoAPI() : lastFetch(0) {
     curl_global_init(CURL_GLOBAL_DEFAULT);
 }
@@ -20,7 +20,7 @@ size_t CryptoAPI::WriteCallback(void* contents, size_t size, size_t nmemb, strin
     return totalSize;
 }
 
-// Make HTTP request
+//Fxn to makke  an  HTTP request
 string CryptoAPI::makeRequest(const string& url) {
     CURL* curl = curl_easy_init();
     if (!curl) return "Error: Failed to initialize CURL";
@@ -44,7 +44,7 @@ string CryptoAPI::makeRequest(const string& url) {
     return response;
 }
 
-// Parse single cryptocurrency
+//Fxn for Parsing  single cryptocurrency json and extracting info 
 Cryptocurrency CryptoAPI::parseCryptoJSON(const string& json, const string& cryptoId) {
     Cryptocurrency crypto;
     crypto.id = cryptoId;
@@ -85,7 +85,7 @@ Cryptocurrency CryptoAPI::parseCryptoJSON(const string& json, const string& cryp
         }
     }
     
-    // Extract volume (if available)
+    // Extract volume 
     size_t volumePos = json.find("\"usd_24h_vol\":");
     if (volumePos != string::npos) {
         size_t start = volumePos + 14;
@@ -139,7 +139,7 @@ Cryptocurrency CryptoAPI::parseCryptoJSON(const string& json, const string& cryp
     return crypto;
 }
 
-// Get single cryptocurrency price
+//Fxn for getting single crypto coin price
 Cryptocurrency CryptoAPI::getCryptoPrice(const string& cryptoId) {
     // Check cache (2 minute cache for crypto)
     auto now = time(nullptr);
@@ -154,7 +154,7 @@ Cryptocurrency CryptoAPI::getCryptoPrice(const string& cryptoId) {
     string response = makeRequest(url);
     
     if (response.find("Error:") == 0 || response.empty()) {
-        // Return empty crypto on error
+        //Return empty crypto on error
         return Cryptocurrency();
     }
     
@@ -173,18 +173,19 @@ vector<Cryptocurrency> CryptoAPI::getTopCryptos(int limit) {
     return parseTopCryptosJSON(response, limit);
 }
 
-// Parse top cryptocurrencies
+
+/* Fxn for Parsing top cryptocurrencies json and extracting info to geta bunch of top crypto coins and thier whole 
+info like ID , Symbol , name , Price , chanege in 24 hours , market cahnge  */
 vector<Cryptocurrency> CryptoAPI::parseTopCryptosJSON(const string& json, int limit) {
     vector<Cryptocurrency> cryptos;
     
-    // Simple parsing for array format
     size_t pos = 0;
     int count = 0;
     
     while (count < limit && pos != string::npos) {
         Cryptocurrency crypto;
         
-        // Find id
+        //id
         size_t idPos = json.find("\"id\":\"", pos);
         if (idPos == string::npos) break;
         
@@ -192,7 +193,7 @@ vector<Cryptocurrency> CryptoAPI::parseTopCryptosJSON(const string& json, int li
         size_t idEnd = json.find("\"", idStart);
         crypto.id = json.substr(idStart, idEnd - idStart);
         
-        // Find symbol
+        //symbol
         size_t symbolPos = json.find("\"symbol\":\"", idEnd);
         if (symbolPos != string::npos) {
             size_t symbolStart = symbolPos + 10;
@@ -201,7 +202,7 @@ vector<Cryptocurrency> CryptoAPI::parseTopCryptosJSON(const string& json, int li
             transform(crypto.symbol.begin(), crypto.symbol.end(), crypto.symbol.begin(), ::toupper);
         }
         
-        // Find name
+        //name
         size_t namePos = json.find("\"name\":\"", symbolPos);
         if (namePos != string::npos) {
             size_t nameStart = namePos + 8;
@@ -209,7 +210,7 @@ vector<Cryptocurrency> CryptoAPI::parseTopCryptosJSON(const string& json, int li
             crypto.name = json.substr(nameStart, nameEnd - nameStart);
         }
         
-        // Find price
+        //price
         size_t pricePos = json.find("\"current_price\":", namePos);
         if (pricePos != string::npos) {
             size_t priceStart = pricePos + 16;
@@ -221,7 +222,7 @@ vector<Cryptocurrency> CryptoAPI::parseTopCryptosJSON(const string& json, int li
             }
         }
         
-        // Find 24h change
+        //24h change
         size_t changePos = json.find("\"price_change_percentage_24h\":", pricePos);
         if (changePos != string::npos) {
             size_t changeStart = changePos + 31;
@@ -233,7 +234,7 @@ vector<Cryptocurrency> CryptoAPI::parseTopCryptosJSON(const string& json, int li
             }
         }
         
-        // Find market cap
+        //market cap
         size_t marketCapPos = json.find("\"market_cap\":", changePos);
         if (marketCapPos != string::npos) {
             size_t marketCapStart = marketCapPos + 13;
@@ -252,6 +253,7 @@ vector<Cryptocurrency> CryptoAPI::parseTopCryptosJSON(const string& json, int li
     
     return cryptos;
 }
+
 
 // Convert between cryptocurrencies
 string CryptoAPI::convertCrypto(const string& from, const string& to, double amount) {
@@ -273,7 +275,7 @@ string CryptoAPI::convertCrypto(const string& from, const string& to, double amo
     return ss.str();
 }
 
-//print single crypto
+//print single crypto info 
 string CryptoAPI::getPrettyCrypto(const string& cryptoId) {
     Cryptocurrency crypto = getCryptoPrice(cryptoId);
     
@@ -283,7 +285,7 @@ string CryptoAPI::getPrettyCrypto(const string& cryptoId) {
     }
     
     stringstream ss;
-    ss << "💰 " << crypto.name << " (" << crypto.symbol << ")\n";
+    ss << "💰 " <<crypto.name<< " (" << crypto.symbol << ")\n";
     ss << "────────────────────────\n";
     ss << "💵 Price: $" << formatCurrency(crypto.price_usd) << "\n";
     ss << getTrendEmoji(crypto.price_change_24h) << " 24h Change: " 

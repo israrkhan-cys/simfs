@@ -1,6 +1,6 @@
+#include "include/colors.h"
 #include "include/file_system.h"
 #include "include/utils.h"
-#include "include/colors.h"
 #include "include/weather.h"
 #include "include/crypto.h"
 #include <iostream>
@@ -9,8 +9,9 @@ using namespace std;
 int main() {
     FileSystem fs;
     fs.CreateSystem();
+
     //APIs 
-    Weather weatherAPI("Weather_API_key_here");
+    Weather weatherAPI("Weather_API_key_here"); // got the api from OpenweatherMap.org if u wanna test the project jsut grab an API from the site it free 
     CryptoAPI cryptoAPI;
 
 
@@ -31,24 +32,53 @@ int main() {
         else if (cmd == "help" || cmd == "--help" || cmd == "-h") {
             if (args.size() > 1) { showCommandHelp(args[1]);
                 }else {
-                    showHelp();}
+                showHelp();}
         }
-        else if (cmd == "ls") fs.ls();
-        else if (cmd == "mkdir" && args.size() > 1) fs.mkdir(args[1]);
-        else if (cmd == "touch" && args.size() > 1) fs.touch(args[1]);
-        else if (cmd == "cd" && args.size() > 1) fs.cd(args[1]);
-        else if (cmd == "rm" && args.size() > 1) fs.rm(args[1]);
-        else if (cmd == "cat" && args.size() > 1) fs.cat(args[1]);
-        else if (cmd == "mv" && args.size() > 2) fs.mv(args[1], args[2]);
-        else if (cmd == "cp" && args.size() > 2) fs.cp(args[1], args[2]); 
-        else if (cmd == "echo" && args.size() >= 3 && args[args.size()-2] == ">") {   fs.writeToFile(args.back(), args[1]);  }
-        else if(cmd == "pwd"){ fs.pwd();}
-        else if (cmd == "sysinfo" || cmd == "neofetch"){ sysinfo();} 
-        else if (cmd == "clear") clearTerminal();
-        else if (cmd == "date" || cmd== "time") timedate(cmd);
-        else if (cmd == "whoami") { cout<<"israr\n";}
-        else if (cmd == "weather" && args.size() > 1) {
-                std::string city = args[1];
+
+        else if (cmd == "ls") fs.ls();  
+        else if (cmd == "mkdir" && args.size() > 1) fs.mkdir(args[1]);  // for making directory 
+        else if (cmd == "touch" && args.size() > 1) fs.touch(args[1]);  // touch is used make a file 
+        else if (cmd == "cd" && args.size() > 1) fs.cd(args[1]);        // change directory cammand
+        else if (cmd == "rm" && args.size() > 1) fs.rm(args[1]);        // remove either a file or a directory 
+        else if (cmd == "cat" && args.size() > 1) fs.cat(args[1]);         //used to write into a file like *.cpp , *.txt and stuff 
+        else if (cmd == "mv" && args.size() > 2) fs.mv(args[1], args[2]);  // mv used to move a directory form one place to another 
+        else if (cmd == "cp" && args.size() > 2) fs.cp(args[1], args[2]);  //for copying from one place to another 
+        else if (cmd == "echo" && args.size() >= 3 && args[args.size()-2] == ">") {   fs.writeToFile(args.back(), args[1]);  }    //
+        else if (cmd == "pwd"){ fs.pwd();}                                // check which directory you are in 
+        else if (cmd == "sysinfo" || cmd == "neofetch"){ sysinfo();}     // check the more info about the system 
+        else if (cmd == "clear") clearTerminal();                        // for the CLI terminal mess 
+        else if (cmd == "date" || cmd== "time") timedate(cmd);           // checking time 
+        else if (cmd == "whoami") { cout<<"israr\n";}  
+        
+        else if (cmd == "find") {
+            if (args.size() < 2) {  cout << "find: missing pattern\nTry: find *.cpp  or  find -type f\n"; continue; }
+                string pattern = args.back();
+                bool files = true, dirs = true;
+
+                 // Quick check for -type option
+                for (size_t i = 1; i < args.size(); i++) {
+                     if (args[i] == "-type" && i + 1 < args.size()) {
+                      if (args[i+1] == "f") dirs = false;
+                    if (args[i+1] == "d") files = false;
+                 }
+                }
+            auto results = fs.find(pattern, files, dirs);
+             if (results.empty()) {
+                    cout << "No matches found.\n";
+                 } else {
+                  cout << "🔍 Found " << results.size() << " item(s):\n";
+                      for (const auto& path : results) {
+            if (path.back() == '/') {
+                cout << Colors::BLUE << "📁 " << path << Colors::RESET << endl;
+            } else {
+                cout << Colors::WHITE << "📄 " << path << Colors::RESET << endl;
+              }
+            }
+        }
+    }
+ 
+        else if (cmd == "weather" && args.size() > 1) {               // small application of weather 
+                string city = args[1];
                  for (size_t i = 2; i < args.size(); i++) {
                       city += " " + args[i];
                     }
@@ -71,7 +101,7 @@ int main() {
     }
     else if (args.size() == 3 && args[1] == "top") {
         try {
-            int limit = std::stoi(args[2]);
+            int limit = stoi(args[2]);
             cout << cryptoAPI.getPrettyTop(limit) << endl;
         } catch (...) {
             cout << "❌ Invalid number. Usage: crypto top [number]\n";
@@ -79,9 +109,9 @@ int main() {
     }
     else if (args.size() >= 5 && args[1] == "convert") {
         try {
-            double amount = std::stod(args[2]);
-            std::string from = args[3];
-            std::string to = args[5];  // args[4] should be "to"
+            double amount = stod(args[2]);
+            string from = args[3];
+            string to = args[5];  // args[4] should be "to"
             
             cout << cryptoAPI.convertCrypto(from, to, amount) << endl;
         } catch (...) {
@@ -91,7 +121,7 @@ int main() {
     }
     else {
         // Try as single crypto with spaces in name
-        std::string coin;
+        string coin;
         for (size_t i = 1; i < args.size(); i++) {
             if (i > 1) coin += " ";
             coin += args[i];
@@ -100,32 +130,7 @@ int main() {
         }
     }
     
-    else if (cmd == "find") {
-    if (args.size() < 2) {  cout << "find: missing pattern\nTry: find *.cpp  or  find -type f\n"; continue; }
-    string pattern = args.back();
-    bool files = true, dirs = true;
-
-    // Quick check for -type option
-    for (size_t i = 1; i < args.size(); i++) {
-        if (args[i] == "-type" && i + 1 < args.size()) {
-            if (args[i+1] == "f") dirs = false;
-            if (args[i+1] == "d") files = false;
-        }
-    }
-    auto results = fs.find(pattern, files, dirs);
-    if (results.empty()) {
-        cout << "No matches found.\n";
-    } else {
-        cout << "🔍 Found " << results.size() << " item(s):\n";
-        for (const auto& path : results) {
-            if (path.back() == '/') {
-                cout << Colors::BLUE << "📁 " << path << Colors::RESET << endl;
-            } else {
-                cout << Colors::WHITE << "📄 " << path << Colors::RESET << endl;
-              }
-          }
-      }
-   }
+    
       
      else cout << Colors::RED << "ERROR: " << Colors::RESET<<  "Command not recognized." << endl;
     }   
