@@ -39,11 +39,14 @@ This project implements that tree structure practically, with real file operatio
 - Terminal UI with ANSI colors
 - 
 ### 🌐 APIs Integrations 
--  Weather API - Real-time weather 
-- Crypto API - Live cryptocurrency prices
-  
-###  DEMO
-img/demo.jpg
+- **Weather API** - Real-time weather 
+- **Crypto API** - Live cryptocurrency prices
+- **HTTP client** implementation using libcurl
+- **Response caching** to reduce API calls
+
+## 📸 Demo
+
+![SIMFS Demo](docs/demo.png)
 
 ### Project Structure
 ```bash
@@ -55,6 +58,7 @@ simfs/
 ```
 
 ### Try it Yourself 
+### You can compile it using the bash script it built with it it is simple than longs cammands 
 ```bash
 # Clone and build
 git clone https://github.com/israrkhan-cys/simfs.git
