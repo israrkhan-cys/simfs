@@ -26,10 +26,11 @@ It gives a Terminal and you can use different basic linux cammands to interact w
 ## ✨ Features
 
 ### 🗂️ Core File System
-- Hierarchical tree-based file storage
-- Complete file operations (CRUD, move, copy)
-- Path resolution with absolute/relative paths
-- Memory management with RAII principles
+- **Hierarchical storage** using n-ary trees
+- **Complete path resolution** with `.` and `..` support
+- **File operations**: create, read, update, delete, move, copy
+- **Recursive search** with wildcard pattern matching (`*.cpp`, `project*`)
+- **Memory management** with RAII cleanup
 
 
 ### 🛠️ Technical Highlights
