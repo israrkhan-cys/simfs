@@ -64,9 +64,9 @@ void timedate(string cmd){
 
 // to remove the mess from main Fxn i made this it handles all the cammands and the neccesay execution 
 namespace CommandUtils {
-    
+
 bool executeCommand(FileSystem& fs, Weather& weather, CryptoAPI& crypto, 
-                   constvector<std::string>& args) {
+                   const vector<std::string>& args) {
     if (args.empty()) return true;
     
    string cmd = args[0];
@@ -166,7 +166,7 @@ bool executeCommand(FileSystem& fs, Weather& weather, CryptoAPI& crypto,
     return true;
 }
 
-void handleCryptoCommand(CryptoAPI& crypto, constvector<std::string>& args) {
+void handleCryptoCommand(CryptoAPI& crypto, const vector<string>& args) {
     if (args.size() == 2) {
         if (args[1] == "market") {
             cout << crypto.getMarketOverview() << endl;
@@ -208,7 +208,7 @@ void handleCryptoCommand(CryptoAPI& crypto, constvector<std::string>& args) {
     }
 }
 
-void printPrompt(conststring& path) {
+void printPrompt(const string& path) {
     cout << Colors::GREEN << "israr@cpp" << Colors::RESET << ":" 
          << Colors::BLUE << "~" << path << Colors::RESET << "$ ";
 }

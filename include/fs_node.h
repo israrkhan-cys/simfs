@@ -7,11 +7,11 @@
 using namespace std;
 
 struct FSNode {
-    string name;
-    bool isDirectory;
-    FSNode* parent;
-    vector<FSNode*> children;
-    string content; 
+    string name;                // File/directory name
+    bool isDirectory;           // Type flag
+    FSNode* parent;             // Points to parent (enables "..")
+    vector<FSNode*> children;   // Unlimited children (N-ary)
+    string content;             // File content (empty for dirs)
     string createdTime;
 
     FSNode(string n, bool isDir, FSNode* p);

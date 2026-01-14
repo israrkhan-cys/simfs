@@ -1,4 +1,4 @@
-// file_system.h - Only declarations
+// file_system.h -
 #ifndef FILE_SYSTEM_H
 #define FILE_SYSTEM_H
 
@@ -16,7 +16,7 @@ private:
     vector<string> split(const string& str, char delimiter);
     FSNode* resolvePath(const string& path);
     string getFullPath(FSNode* node);
-    // Helper: Check if name matches pattern (supports * wildcard)
+    // Helper: Check if name matches pattern (supports * wildcard) for any type
     bool matchesPattern(const string& name, const string& pattern);
 
 

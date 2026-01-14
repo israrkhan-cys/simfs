@@ -1,4 +1,4 @@
-// file_system.cpp - FileSystem implementations
+// file_system.cpp
 #include "../include/file_system.h"
 #include "../include/utils.h"
 #include "../include/colors.h"
@@ -234,7 +234,7 @@ void FileSystem::CreateSystem(){
 
 
 
-// Helper: Simple wildcard matching (supports * only)
+// Helper: Simple wildcard matching (supports * only) ...used by the find function to search for any files with  some type 
 bool FileSystem::matchesPattern(const std::string& name, const std::string& pattern) {
     // If pattern is empty, match everything
     if (pattern.empty()) return true;
