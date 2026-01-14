@@ -1,6 +1,9 @@
 // utils.cpp - Implement helper functions
 #include "../include/utils.h"
 #include "../include/colors.h"
+#include "../include/file_system.h"
+#include "../include/weather.h"
+#include "../include/crypto.h"
 #include <iostream>
 #include <sstream>
 #include <ctime>
@@ -59,6 +62,160 @@ void timedate(string cmd){
     }
 }
 
+// to remove the mess from main Fxn i made this it handles all the cammands and the neccesay execution 
+namespace CommandUtils {
+    
+bool executeCommand(FileSystem& fs, Weather& weather, CryptoAPI& crypto, 
+                   constvector<std::string>& args) {
+    if (args.empty()) return true;
+    
+   string cmd = args[0];
+    
+    // Exit command
+    if (cmd == "exit" || cmd == "quit") {
+        return false;
+    }
+    
+   
+    else if (cmd == "ls") fs.ls();
+    else if (cmd == "mkdir" && args.size() > 1) fs.mkdir(args[1]);   // for making directory 
+    else if (cmd == "touch" && args.size() > 1) fs.touch(args[1]);   // touch is used make a file 
+    else if (cmd == "cd" && args.size() > 1) fs.cd(args[1]);          // change directory cammand
+    else if (cmd == "rm" && args.size() > 1) fs.rm(args[1]);          // remove either a file or a directory 
+    else if (cmd == "cat" && args.size() > 1) fs.cat(args[1]);        //used to write into a file like *.cpp , *.txt and stuff 
+    else if (cmd == "mv" && args.size() > 2) fs.mv(args[1], args[2]); // mv used to move a directory form one place to another 
+    else if (cmd == "cp" && args.size() > 2) fs.cp(args[1], args[2]);  //for copying from one place to another 
+    else if (cmd == "pwd") fs.pwd();                                 // check which directory you are in 
+    
+    
+    else if (cmd == "find") {    // find  cammand let you  check for files and directory in system 
+        if (args.size() < 2) {
+            cout << "find: missing pattern\nTry: find *.cpp  or  find -type f\n";
+            return true;
+        }
+        
+       string pattern = args.back();
+        bool files = true, dirs = true;
+        
+        for (size_t i = 1; i < args.size(); i++) {
+            if (args[i] == "-type" && i + 1 < args.size()) {
+                if (args[i+1] == "f") dirs = false;
+                if (args[i+1] == "d") files = false;
+            }
+        }
+        
+        auto results = fs.find(pattern, files, dirs);
+        if (results.empty()) {
+            cout << "No matches found.\n";
+        } else {
+            cout << "🔍 Found " << results.size() << " item(s):\n";
+            for (const auto& path : results) {
+                if (path.back() == '/') {
+                    cout << Colors::BLUE << "📁 " << path << Colors::RESET << endl;
+                } else {
+                    cout << Colors::WHITE << "📄 " << path << Colors::RESET << endl;
+                }
+            }
+        }
+    }
+    
+    // Echo command
+    else if (cmd == "echo" && args.size() >= 3 && args[args.size()-2] == ">") {
+        fs.writeToFile(args.back(), args[1]);
+    }
+    
+    // Weather Commands
+    else if (cmd == "weather") {
+        if (args.size() > 1) {
+           string city = args[1];
+            for (size_t i = 2; i < args.size(); i++) {
+                city += " " + args[i];
+            }
+            cout << weather.getWeather(city) << endl;
+        } else {
+            cout << weather.getWeather("Islamabad") << endl;
+        }
+    }
+    
+    // Crypto Commands
+    else if (cmd == "crypto") {
+        handleCryptoCommand(crypto, args);
+    }
+    
+    // System Commands
+    else if (cmd == "clear") clearTerminal();
+    else if (cmd == "date" || cmd == "time") timedate(cmd);
+    else if (cmd == "sysinfo" || cmd == "neofetch") sysinfo();
+    else if (cmd == "whoami") cout << "israr\n";
+    
+    // Help Command
+    else if (cmd == "help" || cmd == "--help" || cmd == "-h") {
+        if (args.size() > 1) {
+            showCommandHelp(args[1]);
+        } else {
+            showHelp();
+        }
+    }
+    
+    // Unknown command
+    else {
+        cout << Colors::RED << "ERROR: " << Colors::RESET 
+             << "Command not recognized." << endl;
+    }
+    
+    return true;
+}
+
+void handleCryptoCommand(CryptoAPI& crypto, constvector<std::string>& args) {
+    if (args.size() == 2) {
+        if (args[1] == "market") {
+            cout << crypto.getMarketOverview() << endl;
+        }
+        else if (args[1] == "top") {
+            cout << crypto.getPrettyTop(5) << endl;
+        }
+        else {
+            cout << crypto.getPrettyCrypto(args[1]) << endl;
+        }
+    }
+    else if (args.size() == 3 && args[1] == "top") {
+        try {
+            int limit = stoi(args[2]);
+            cout << crypto.getPrettyTop(limit) << endl;
+        } catch (...) {
+            cout << "❌ Invalid number. Usage: crypto top [number]\n";
+        }
+    }
+    else if (args.size() >= 5 && args[1] == "convert") {
+        try {
+            double amount = stod(args[2]);
+           string from = args[3];
+           string to = args[5];
+            
+            cout << crypto.convertCrypto(from, to, amount) << endl;
+        } catch (...) {
+            cout << "❌ Usage: crypto convert <amount> <from> to <to>\n";
+            cout << "Example: crypto convert 1 bitcoin to ethereum\n";
+        }
+    }
+    else {
+       string coin;
+        for (size_t i = 1; i < args.size(); i++) {
+            if (i > 1) coin += " ";
+            coin += args[i];
+        }
+        cout << crypto.getPrettyCrypto(coin) << endl;
+    }
+}
+
+void printPrompt(conststring& path) {
+    cout << Colors::GREEN << "israr@cpp" << Colors::RESET << ":" 
+         << Colors::BLUE << "~" << path << Colors::RESET << "$ ";
+}
+
+} 
+
+
 void showBanner() {
     cout << "\033[1;36m" << endl;
     cout << "╔════════════════════════════════════════════════════════╗" << endl;
@@ -71,7 +228,7 @@ void showBanner() {
     cout << "║          ╚══════╝╚═╝╚═╝     ╚═╝╚══════╝╚══════╝        ║" << endl;
     cout << "║                                                        ║" << endl;
     cout << "║               File System Simulator v1.0               ║" << endl;
-    cout << "║                                                        ║" << endl;
+    cout << "║              Made  with  Love  By   Israr              ║" << endl;
     cout << "╚════════════════════════════════════════════════════════╝" << endl;
     cout << "📁 Type 'help' for commands | 'exit' to quit" << endl;
     cout << "\033[0m" << endl;
@@ -235,3 +392,6 @@ void showCommandHelp(const string& cmd) {
     }
     cout << "────────────────────────" << endl;
 }
+
+
+
