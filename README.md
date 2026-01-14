@@ -21,7 +21,7 @@
 When you navigate `/home/user/docs/file.txt`, you're traversing a tree:
 
 This project implements that tree structure practically, with real file operations and some API integrations as bonus features.
-It gives a Terminal and you can use different cammands to interact wiht the system Implemented all simpled linux cammands.
+It gives a Terminal and you can use different basic linux cammands to interact with the system.
 
 ## ✨ Features
 
