@@ -54,6 +54,7 @@ It gives a Terminal and you can use different basic linux cammands to interact w
 ```bash
 simfs/
 ├── include/     # Headers (interfaces)
+├── docs/        
 ├── src/         # Implementation
 ├── main.cpp     # Entry point
 └── build.sh     # Build automation
