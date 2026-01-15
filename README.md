@@ -61,7 +61,7 @@ simfs/
 ```
 
 ### Try it Yourself 
-### You can compile it using the bash script it built with it it is simple than longs cammands 
+### You can compile it using the bash script with it it is much simpler to use.  
 ```bash
 # Clone and build
 git clone https://github.com/israrkhan-cys/simfs.git
