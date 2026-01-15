@@ -69,7 +69,7 @@ cd simfs
 ./build.sh
 
 # Run
-./linux_sim
+./simfs
 ```
 ### If u have any suggestion or feedbacks for this project hit me up on linkden
 
